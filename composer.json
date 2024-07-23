@@ -1,0 +1,25 @@
+{
+    "name": "unvurn/http-user-agent",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Unvurn\\Http\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Unvurn\\Http\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "hironobu koura",
+            "email": "hironobu@unvurn.cc"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^11.2",
+        "orchestra/testbench": "^9.2"
+    }
+}
