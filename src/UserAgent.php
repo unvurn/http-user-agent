@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Unvurn\Http;
 
 use Unvurn\Http\UserAgent\Product;
+use Unvurn\Http\UserAgent\Factory;
 
 class UserAgent
 {
     /** @var Product[] $products */
     private array $products = [];
 
-    public function __construct(private readonly string $value) {
-        $this->products = $this->parse($this->value);
+    public function __construct(string $source)
+    {
+        $this->products = $this->parse($source);
     }
 
     public function product(string $name): ?Product
@@ -58,7 +60,7 @@ class UserAgent
         $productName = null;
         $productVersion = null;
 
-        $appender = function($str, $i0, $i) {
+        $appender = function ($str, $i0, $i) {
             $pv = explode('/', substr($str, $i0, $i - $i0 - ($str[$i - 1] == ',' || $str[$i - 1] == ';' || $str[$i - 1] == ')' ? 1 : 0)), 2);
             return [$pv[0], count($pv) > 1 ? $pv[1] : null];
         };
@@ -108,12 +110,18 @@ class UserAgent
         if (!is_null($i0)) {
             $pv = $appender($str, $i0, $i);
             $product = new Product($pv[1] ?? "", null);
-            $products[$pv[0]] = $product; // $pv[1];
+            $products[$pv[0]] = $product;
 
             $productName = null;
             $productVersion = null;
         }
 
         return $products;
+    }
+
+    public static function create(string $source): UserAgent
+    {
+        static $factory = new Factory();
+        return $factory->create($source);
     }
 }

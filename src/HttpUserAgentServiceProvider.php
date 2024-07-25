@@ -11,7 +11,7 @@ class HttpUserAgentServiceProvider extends ServiceProvider
     {
         Request::macro('getUserAgent', function () {
             /** @var $this Request */
-            return new UserAgent($this->userAgent());
+            return UserAgent::create($this->userAgent());
         });
     }
 }
