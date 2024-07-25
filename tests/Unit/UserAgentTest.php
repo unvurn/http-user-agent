@@ -4,10 +4,13 @@ namespace Unvurn\Http\Tests\Unit;
 
 use Unvurn\Http\Tests\TestCase;
 use Unvurn\Http\UserAgent;
+use function PHPUnit\Framework\assertEmpty;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertInstanceOf;
 use function PHPUnit\Framework\assertNotNull;
 use function PHPUnit\Framework\assertNull;
+use function PHPUnit\Framework\assertTrue;
 
 class UserAgentTest extends TestCase
 {
@@ -20,13 +23,33 @@ class UserAgentTest extends TestCase
     public function testUserAgentWithEmptyVersion()
     {
         $userAgent = new UserAgent("aaa");
-        assertNull($userAgent->productVersion("aaa"));
+        assertNotNull($userAgent->product("aaa"));
+        assertEmpty($userAgent->productVersion("aaa"));
+        assertNull($userAgent->product("bbb"));
     }
 
     public function testUserAgentWithValidString()
     {
         $userAgent = new UserAgent("aaa/111");
+        assertNotNull($userAgent->product("aaa"));
         assertEquals("111", $userAgent->productVersion("aaa"));
+        assertEquals("111", $userAgent->product("aaa")->version);
+        assertNull($userAgent->productComment("aaa"));
+        assertNull($userAgent->product("aaa")->comment);
+
+        assertNull($userAgent->product("bbb"));
+    }
+
+    public function testUserAgentWithComment()
+    {
+        $userAgent = new UserAgent("aaa/111 (comment here)");
+        assertNotNull($userAgent->product("aaa"));
+        assertEquals("111", $userAgent->productVersion("aaa"));
+        assertEquals("111", $userAgent->product("aaa")->version);
+        assertEquals("comment here", $userAgent->productComment("aaa"));
+        assertEquals("comment here", $userAgent->product("aaa")->comment);
+
+        assertNull($userAgent->product("bbb"));
     }
 
     public function testUserAgentWithValidString2()
@@ -34,7 +57,17 @@ class UserAgentTest extends TestCase
         $userAgent = new UserAgent("aaa/111 bbb/222");
         assertEquals("111", $userAgent->productVersion("aaa"));
         assertEquals("222", $userAgent->productVersion("bbb"));
-        assertNull($userAgent->productVersion("ccc"));
+        assertNull($userAgent->product("ccc"));
+    }
+
+    public function testUserAgentWithValidString3()
+    {
+        $userAgent = new UserAgent("aaa/111 bbb/222 ccc");
+        assertEquals("111", $userAgent->productVersion("aaa"));
+        assertEquals("222", $userAgent->productVersion("bbb"));
+        assertNotNull($userAgent->productVersion("ccc"));
+        assertEmpty($userAgent->productVersion("ccc"));
+        assertNull($userAgent->productVersion("ddd"));
     }
 
     public function testUserAgentWithUnityPlayerSample()

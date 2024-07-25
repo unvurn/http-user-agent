@@ -17,18 +17,31 @@ class UserAgent
 
     public function product(string $name): ?Product
     {
-        if (!array_key_exists($name, $this->products)) {
+        if (!$this->hasProduct($name)) {
             return null;
         }
         return $this->products[$name];
     }
 
+    public function hasProduct(string $name): bool
+    {
+        return array_key_exists($name, $this->products);
+    }
+
     public function productVersion(string $name): ?string
     {
-        if (!array_key_exists($name, $this->products)) {
+        if (!$this->hasProduct($name)) {
             return null;
         }
         return $this->products[$name]->version;
+    }
+
+    public function productComment(string $name): ?string
+    {
+        if (!$this->hasProduct($name)) {
+            return null;
+        }
+        return $this->products[$name]->comment;
     }
 
     /**
@@ -94,7 +107,7 @@ class UserAgent
 
         if (!is_null($i0)) {
             $pv = $appender($str, $i0, $i);
-            $product = new Product($pv[1], null);
+            $product = new Product($pv[1] ?? "", null);
             $products[$pv[0]] = $product; // $pv[1];
 
             $productName = null;
