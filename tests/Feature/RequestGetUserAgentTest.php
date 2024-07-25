@@ -16,7 +16,7 @@ class RequestGetUserAgentTest extends TestCase
         $this->assertEquals('foo/1.0', $request->userAgent());
 
         $userAgent = $request->getUserAgent();
-        $this->assertEquals('1.0', $userAgent->value("foo"));
+        $this->assertEquals('1.0', $userAgent->productVersion("foo"));
     }
 
     protected function getPackageProviders($app): array
