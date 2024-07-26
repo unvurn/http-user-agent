@@ -28,5 +28,8 @@
     "require-dev": {
         "phpunit/phpunit": "^11.2",
         "orchestra/testbench": "^9.2"
+    },
+    "require": {
+        "unvurn/common": "dev-main"
     }
 }

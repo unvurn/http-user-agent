@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Unvurn\Http;
 
+use Unvurn\Common\HasCachedCreator;
 use Unvurn\Http\UserAgent\Product;
 
 class UserAgent
