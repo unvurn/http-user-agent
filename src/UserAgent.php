@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Unvurn\Http;
 
 use Unvurn\Http\UserAgent\Product;
-use Unvurn\Http\UserAgent\Factory;
 
 class UserAgent
 {
+    use HasCachedCreator;
+
     /** @var Product[] $products */
     private array $products = [];
 
@@ -117,11 +118,5 @@ class UserAgent
         }
 
         return $products;
-    }
-
-    public static function create(string $source): UserAgent
-    {
-        static $factory = new Factory();
-        return $factory->create($source);
     }
 }
