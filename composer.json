@@ -30,6 +30,6 @@
         "orchestra/testbench": "^9.2"
     },
     "require": {
-        "unvurn/common": "dev-main"
+        "unvurn/common": "0.1.0"
     }
 }
